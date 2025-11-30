@@ -1450,47 +1450,6 @@ elif page == "🎲 Prediksi Sentimen":
                     plt.tight_layout()
                     st.pyplot(fig_bar)
                     plt.close()
-                
-                # Display preprocessed text in modern cards
-                st.markdown("<br>", unsafe_allow_html=True)
-                st.markdown("""
-                    <div class='section-container'>
-                        <h2 style='color: #2c3e50; margin-bottom: 1.5rem;'>📝 Text Processing Details</h2>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                col_text1, col_text2 = st.columns(2)
-                
-                with col_text1:
-                    st.markdown(f"""
-                        <div style='background: white; padding: 1.5rem; border-radius: 10px; 
-                                    box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 100%;
-                                    border-left: 4px solid #3498db;'>
-                            <h3 style='color: #3498db; margin: 0 0 1rem 0; font-size: 1.1rem;'>📄 Original Text</h3>
-                            <p style='color: #2c3e50; margin: 0; line-height: 1.6; font-size: 0.95rem;'>{review_input}</p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                
-                with col_text2:
-                    st.markdown(f"""
-                        <div style='background: white; padding: 1.5rem; border-radius: 10px; 
-                                    box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 100%;
-                                    border-left: 4px solid #9b59b6;'>
-                            <h3 style='color: #9b59b6; margin: 0 0 1rem 0; font-size: 1.1rem;'>🔄 Processed Text</h3>
-                            <p style='color: #2c3e50; margin: 0; line-height: 1.6; font-size: 0.95rem;'>{processed_review}</p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                
-                # Processing steps info
-                st.markdown("<br>", unsafe_allow_html=True)
-                with st.expander("ℹ️ Tahapan Preprocessing"):
-                    st.markdown("""
-                        1. **Lowercase** - Mengubah semua huruf menjadi lowercase
-                        2. **Remove Special Chars** - Menghapus karakter khusus dan angka
-                        3. **Tokenization** - Memecah teks menjadi kata-kata
-                        4. **Stopword Removal** - Menghapus kata-kata umum (seperti 'yang', 'di', 'ke')
-                        5. **Stemming** - Mengubah kata ke bentuk dasarnya
-                    """)
     else:
         st.markdown("""
             <div style='background: linear-gradient(135deg, #f5af19 0%, #f12711 100%); 
@@ -1636,78 +1595,7 @@ elif page == "📈 Data Overview":
 
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # =========================
-        # WORDCLOUD SESUAI NOTEBOOK (1:1)
-        # =========================
-        
-        st.markdown("<h2 style='color:#2c3e50;'>☁️ Word Cloud (Sesuai Notebook)</h2>", unsafe_allow_html=True)
-        
-        # HARUS ada final_text & polarity
-        if "final_text" not in df.columns or "polarity" not in df.columns:
-            st.error("Kolom 'final_text' atau 'polarity' tidak ditemukan. Jalankan preprocessing dulu.")
-        else:
-            from wordcloud import WordCloud
-            
-            # siapkan join teks
-            text_pos = " ".join(df[df['polarity'] == 'positive']['final_text'].dropna())
-            text_neg = " ".join(df[df['polarity'] == 'negative']['final_text'].dropna())
-            text_neu = " ".join(df[df['polarity'] == 'neutral']['final_text'].dropna())
-
-            col1, col2, col3 = st.columns(3)
-
-            # POSITIVE
-            with col1:
-                st.subheader("😊 Positive")
-                if len(text_pos.strip()) == 0:
-                    st.warning("Tidak ada data positive.")
-                else:
-                    wc_pos = WordCloud(width=400, height=400,
-                                       background_color='white',
-                                       colormap='Greens',
-                                       collocations=False).generate(text_pos)
-                    fig, ax = plt.subplots(figsize=(6,6))
-                    ax.imshow(wc_pos, interpolation='bilinear')
-                    ax.axis('off')
-                    st.pyplot(fig)
-                    plt.close()
-
-            # NEGATIVE
-            with col2:
-                st.subheader("😞 Negative")
-                if len(text_neg.strip()) == 0:
-                    st.warning("Tidak ada data negative.")
-                else:
-                    wc_neg = WordCloud(width=400, height=400,
-                                       background_color='white',
-                                       colormap='Reds',
-                                       collocations=False).generate(text_neg)
-                    fig, ax = plt.subplots(figsize=(6,6))
-                    ax.imshow(wc_neg, interpolation='bilinear')
-                    ax.axis('off')
-                    st.pyplot(fig)
-                    plt.close()
-
-            # NEUTRAL
-            with col3:
-                st.subheader("😐 Neutral")
-                if len(text_neu.strip()) == 0:
-                    st.warning("Tidak ada data neutral.")
-                else:
-                    wc_neu = WordCloud(width=400, height=400,
-                                       background_color='white',
-                                       colormap='Blues',
-                                       collocations=False).generate(text_neu)
-                    fig, ax = plt.subplots(figsize=(6,6))
-                    ax.imshow(wc_neu, interpolation='bilinear')
-                    ax.axis('off')
-                    st.pyplot(fig)
-                    plt.close()
-            
-            st.markdown("<br>", unsafe_allow_html=True)
-    
-    else:
-        st.error("⚠️ Data tidak dapat dimuat!")
-
+       
 
 # ====================
 # PAGE 5: UPLOAD CSV (FULL NOTEBOOK CODE)
